@@ -1,6 +1,11 @@
 <template>
   <Table>
     <template v-slot:header>Data Kasir</template>
+    <template v-slot:addButton>
+      <router-link to="/add-kasir" class="btn btn-primary btn-md"
+        >Tambah Data</router-link
+      ></template
+    >
     <template v-slot:content>
       <table
         class="table table-bordered dataTable"

@@ -23,11 +23,7 @@
               </div>
               <div class="col-sm-12 col-md-9 d-flex justify-content-end">
                 <div id="dataTable_filter" class="dataTables_filter">
-                  <router-link
-                    :to="{ name: 'AddKasir' }"
-                    class="btn btn-primary btn-md"
-                    >Tambah Data</router-link
-                  >
+                  <slot name="addButton"></slot>
                 </div>
               </div>
             </div>

@@ -26,7 +26,7 @@
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="nav-link" to="#">
+      <router-link class="nav-link" :to="{ name: 'Barang' }">
         <i class="fas fa-shopping-bag fa-cog"></i>
         <span class="ml-3">Barang</span>
       </router-link>
