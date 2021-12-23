@@ -1,6 +1,7 @@
 <template>
   <ul
     class="navbar-nav bg-white sidebar sidebar-white accordion"
+    :class="{ toggled: isToggle }"
     id="accordionSidebar"
   >
     <!-- Sidebar - Brand -->
@@ -22,19 +23,19 @@
     <li class="nav-item">
       <router-link class="nav-link" :to="{ name: 'Kasir' }">
         <i class="fas fa-user fa-cog"></i>
-        <span class="ml-3">Kasir</span>
+        <span class="">Kasir</span>
       </router-link>
     </li>
     <li class="nav-item">
       <router-link class="nav-link" :to="{ name: 'Barang' }">
         <i class="fas fa-shopping-bag fa-cog"></i>
-        <span class="ml-3">Barang</span>
+        <span class="">Barang</span>
       </router-link>
     </li>
     <li class="nav-item">
       <router-link class="nav-link" to="#">
         <i class="fas fa-hand-holding-usd fa-cog"></i>
-        <span class="ml-3">Transaksi</span>
+        <span class="">Transaksi</span>
       </router-link>
     </li>
     <!-- <li class="nav-item">
@@ -47,7 +48,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["isToggle"],
+};
 </script>
 
 <style></style>

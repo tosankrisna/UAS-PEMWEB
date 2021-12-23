@@ -1,9 +1,9 @@
 <template>
   <div id="wrapper" v-if="isNotLogin">
-    <Sidebar />
+    <Sidebar :isToggle="isToggle" />
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
-        <Navbar />
+        <Navbar @toggleSidebar="isToggle = !isToggle" />
         <router-view />
       </div>
     </div>
@@ -20,6 +20,11 @@ import Navbar from "@/components/Navbar";
 
 export default {
   components: { Sidebar, Navbar },
+  data() {
+    return {
+      isToggle: false,
+    };
+  },
   computed: {
     isNotLogin() {
       return this.$route.name !== "Login";

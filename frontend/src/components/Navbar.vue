@@ -6,12 +6,17 @@
     <button
       id="sidebarToggleTop"
       class="btn btn-link d-md-none rounded-circle mr-3"
+      @click="toggleSidebar"
     >
       <i class="fa fa-bars"></i>
     </button>
 
     <div class="text-center d-none d-md-inline">
-      <button class="btn btn-md outline-0 border-0" id="sidebarToggle">
+      <button
+        class="btn btn-md outline-0 border-0"
+        id="sidebarToggle"
+        @click="toggleSidebar"
+      >
         <div class="fas fa-bars"></div>
       </button>
     </div>
@@ -68,7 +73,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    toggleSidebar() {
+      console.log("ok");
+      return this.$emit("toggleSidebar");
+    },
+  },
+};
 </script>
 
 <style></style>
