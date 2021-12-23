@@ -5,15 +5,15 @@
     id="accordionSidebar"
   >
     <!-- Sidebar - Brand -->
-    <a
+    <router-link
       class="sidebar-brand d-flex align-items-center justify-content-center"
-      href="index.html"
+      to="/"
     >
       <div class="sidebar-brand-icon rotate-n-15">
         <i class="fas fa-dollar-sign"></i>
       </div>
       <div class="sidebar-brand-text mx-3">Kasirku</div>
-    </a>
+    </router-link>
 
     <hr class="sidebar-divider my-0" />
 
@@ -23,19 +23,19 @@
     <li class="nav-item">
       <router-link class="nav-link" :to="{ name: 'Kasir' }">
         <i class="fas fa-user fa-cog"></i>
-        <span class="">Kasir</span>
+        <span class="ml-3">Kasir</span>
       </router-link>
     </li>
     <li class="nav-item">
       <router-link class="nav-link" :to="{ name: 'Barang' }">
         <i class="fas fa-shopping-bag fa-cog"></i>
-        <span class="">Barang</span>
+        <span class="ml-3">Barang</span>
       </router-link>
     </li>
     <li class="nav-item">
       <router-link class="nav-link" to="#">
         <i class="fas fa-hand-holding-usd fa-cog"></i>
-        <span class="">Transaksi</span>
+        <span class="ml-3">Transaksi</span>
       </router-link>
     </li>
     <!-- <li class="nav-item">
@@ -53,4 +53,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.toggled span {
+  margin-left: 0 !important;
+}
+</style>
