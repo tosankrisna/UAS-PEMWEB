@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Login from "../views/login/Login.vue";
 import Kasir from "../views/dashboard/kasir/Kasir.vue";
 import AddKasir from "../views/../views/dashboard/kasir/AddKasir.vue";
 import EditKasir from "../views/../views/dashboard/kasir/EditKasir.vue";
@@ -7,6 +8,11 @@ import AddBarang from "../views/../views/dashboard/barang/AddBarang.vue";
 import EditBarang from "../views/../views/dashboard/barang/EditBarang.vue";
 
 const routes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
   {
     path: "/",
     name: "Kasir",

@@ -37,12 +37,12 @@
         <span class="ml-3">Transaksi</span>
       </router-link>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <router-link class="nav-link" to="#">
         <i class="fas fa-history fa-cog"></i>
         <span class="ml-3">History</span>
       </router-link>
-    </li>
+    </li> -->
   </ul>
 </template>
 
