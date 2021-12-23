@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper" v-if="isNotLogin">
     <Sidebar />
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
@@ -7,6 +7,10 @@
         <router-view />
       </div>
     </div>
+  </div>
+
+  <div class="container" v-else>
+    <router-view />
   </div>
 </template>
 
@@ -16,5 +20,10 @@ import Navbar from "@/components/Navbar";
 
 export default {
   components: { Sidebar, Navbar },
+  computed: {
+    isNotLogin() {
+      return this.$route.name !== "Login";
+    },
+  },
 };
 </script>
