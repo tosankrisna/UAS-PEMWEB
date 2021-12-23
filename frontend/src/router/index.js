@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/login/Login.vue";
+import Profil from "../views/dashboard/profil/Profil.vue";
 import Kasir from "../views/dashboard/kasir/Kasir.vue";
 import AddKasir from "../views/../views/dashboard/kasir/AddKasir.vue";
 import EditKasir from "../views/../views/dashboard/kasir/EditKasir.vue";
@@ -12,6 +13,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/profil",
+    name: "Profil",
+    component: Profil,
   },
   {
     path: "/",
