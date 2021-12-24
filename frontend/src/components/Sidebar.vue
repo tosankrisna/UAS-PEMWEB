@@ -33,7 +33,7 @@
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="nav-link" to="#">
+      <router-link :to="{ name: 'Transaksi' }" class="nav-link" to="#">
         <i class="fas fa-hand-holding-usd fa-cog"></i>
         <span class="ml-3">Transaksi</span>
       </router-link>

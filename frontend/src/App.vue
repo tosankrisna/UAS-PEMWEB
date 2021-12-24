@@ -4,13 +4,13 @@
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <Navbar @toggleSidebar="isToggle = !isToggle" />
-        <router-view />
+        <router-view :key="$route.path" />
       </div>
     </div>
   </div>
 
   <div class="container" v-else>
-    <router-view />
+    <router-view :key="$route.path" />
   </div>
 </template>
 
