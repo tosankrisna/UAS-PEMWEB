@@ -8,6 +8,7 @@ import Barang from "../views/../views/dashboard/barang/Barang.vue";
 import AddBarang from "../views/../views/dashboard/barang/AddBarang.vue";
 import EditBarang from "../views/../views/dashboard/barang/EditBarang.vue";
 import Transaksi from "../views/../views/dashboard/transaksi/Transaksi.vue";
+import AddTransaksi from "../views/../views/dashboard/transaksi/AddTransaksi.vue";
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: "/transaksi",
     name: "Transaksi",
     component: Transaksi,
+  },
+  {
+    path: "/add-transaksi",
+    name: "AddTransaksi",
+    component: AddTransaksi,
   },
 ];
 

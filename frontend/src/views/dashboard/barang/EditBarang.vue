@@ -1,5 +1,5 @@
 <template>
-  <Form>
+  <Card>
     <template v-slot:header>Edit Barang</template>
     <template v-slot:content>
       <form>
@@ -30,13 +30,13 @@
         </div>
       </form>
     </template>
-  </Form>
+  </Card>
 </template>
 
 <script>
-import Form from "@/components/Form.vue";
+import Card from "@/components/Card.vue";
 export default {
-  components: { Form },
+  components: { Card },
 };
 </script>
 

@@ -1,6 +1,9 @@
 <template>
   <Table>
     <template v-slot:header>Data Barang</template>
+    <template v-slot:search>
+      <Search />
+    </template>
     <template v-slot:addButton>
       <router-link to="/add-barang" class="btn btn-primary btn-md"
         >Tambah Data</router-link
@@ -45,15 +48,18 @@
         </tbody>
       </table>
     </template>
+    <template v-slot:pagination>
+      <Pagination />
+    </template>
   </Table>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
-import Sidebar from "@/components/Sidebar.vue";
 import Table from "@/components/Table.vue";
+import Search from "@/components/Search.vue";
+import Pagination from "@/components/Pagination.vue";
 export default {
   name: "Barang",
-  components: { Sidebar, Navbar, Table },
+  components: { Table, Search, Pagination },
 };
 </script>
