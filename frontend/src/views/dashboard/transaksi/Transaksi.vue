@@ -28,9 +28,13 @@
             <td>1</td>
             <td>8101929101</td>
             <td>24-12-2021</td>
-            <td>Rp. 355.000</td>
+            <td>Rp. 100.000</td>
             <td>
-              <a class="btn btn-sm btn-warning mr-2">Detail</a>
+              <router-link
+                :to="{ name: 'DetailTransaksi' }"
+                class="btn btn-sm btn-warning mr-2"
+                >Detail</router-link
+              >
               <a class="btn btn-sm btn-primary mr-2">Cetak Struk</a>
             </td>
           </tr>

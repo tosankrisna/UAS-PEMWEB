@@ -2,7 +2,7 @@
   <div class="title text-center mb-4">
     <h2 class="text-dark">Login</h2>
   </div>
-  <form>
+  <form @submit.prevent="onSubmit">
     <div class="mb-3">
       <label for="nip" class="form-label">NIP</label>
       <input type="number" class="form-control" id="nip" />
@@ -18,7 +18,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    onSubmit() {
+      this.$router.push("/");
+    },
+  },
+};
 </script>
 
 <style scoped>
