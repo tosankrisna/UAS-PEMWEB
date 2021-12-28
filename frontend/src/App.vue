@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper" v-if="isNotLogin">
+  <div id="wrapper" v-if="isNotRoutes">
     <Sidebar :isToggle="isToggle" />
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
@@ -26,8 +26,10 @@ export default {
     };
   },
   computed: {
-    isNotLogin() {
-      return this.$route.name !== "Login";
+    isNotRoutes() {
+      return (
+        this.$route.name !== "Login" && this.$route.name !== "StrukTransaksi"
+      );
     },
   },
 };

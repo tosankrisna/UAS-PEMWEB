@@ -10,6 +10,7 @@ import EditBarang from "../views/../views/dashboard/barang/EditBarang.vue";
 import Transaksi from "../views/../views/dashboard/transaksi/Transaksi.vue";
 import AddTransaksi from "../views/../views/dashboard/transaksi/AddTransaksi.vue";
 import DetailTransaksi from "../views/../views/dashboard/transaksi/DetailTransaksi.vue";
+import StrukTransaksi from "../views/../views/dashboard/transaksi/StrukTransaksi.vue";
 
 const routes = [
   {
@@ -66,6 +67,11 @@ const routes = [
     path: "/detail-transaksi",
     name: "DetailTransaksi",
     component: DetailTransaksi,
+  },
+  {
+    path: "/struk-transaksi",
+    name: "StrukTransaksi",
+    component: StrukTransaksi,
   },
 ];
 

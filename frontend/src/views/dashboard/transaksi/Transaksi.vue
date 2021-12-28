@@ -35,7 +35,9 @@
                 class="btn btn-sm btn-warning mr-2"
                 >Detail</router-link
               >
-              <a class="btn btn-sm btn-primary mr-2">Cetak Struk</a>
+              <button @click="goToPrint" class="btn btn-sm btn-primary mr-2">
+                Cetak Struk
+              </button>
             </td>
           </tr>
         </tbody>
@@ -51,8 +53,16 @@
 import Table from "@/components/Table.vue";
 import Search from "@/components/Search.vue";
 import Pagination from "@/components/Pagination.vue";
+
 export default {
   components: { Table, Search, Pagination },
+  methods: {
+    goToPrint() {
+      let route = this.$router.resolve({ name: "StrukTransaksi" });
+      const struk = window.open(route.href, "", "status=0");
+      struk.print();
+    },
+  },
 };
 </script>
 
