@@ -1,24 +1,24 @@
-const { barangs } = require('../models');
+const { admins } = require('../models');
 const db = require('../models');
-const Barang = db.barangs;
+const Admin = db.admins;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Barang
+// Create and Save a new Admin
 exports.create = (req, res) => {
-    if (!req.body.nama || !req.body.stok || !req.body.harga) {
+    if (!req.body.nama || !req.body.email || !req.body.password) {
         res.status(500).send({
             message: 'Please fill all forms'
         });
         return;
     }
 
-    const barangs = {
+    const admins = {
         nama: req.body.nama,
-        harga: req.body.harga,
-        stok: req.body.stok
+        email: req.body.email,
+        password: req.body.password
     };
 
-    Barang.create(barangs)
+    Admin.create(admins)
         .then(data => {
             res.send({ status: 'success', data: data });
         })
@@ -27,7 +27,7 @@ exports.create = (req, res) => {
         });
 };
 
-// Retrieve all barang from the database.
+// Retrieve all admins from the database.
 exports.findAll = (req, res) => {
     const nama = req.query.nama;
     const condition = nama ? {
@@ -36,7 +36,7 @@ exports.findAll = (req, res) => {
         }
     } : null;
 
-    Barang.findAll({ where: condition })
+    Admin.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
@@ -45,11 +45,11 @@ exports.findAll = (req, res) => {
         });
 };
 
-// Find a single Barang with an id
+// Find a single Admin with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id_barang;
+    const id = req.params.id;
 
-    Barang.findOne({ where: { id: id } })
+    Admin.findOne({ where: { id: id } })
         .then(data => {
             res.send(data)
         })
@@ -58,52 +58,52 @@ exports.findOne = (req, res) => {
         })
 };
 
-// Update a Barang by the id in the request
+// Update a Admin by the id in the request
 exports.update = (req, res) => {
-    const id = req.params.id_barang;
+    const id = req.params.id;
 
-    Barang.update(req.body, {
+    Admin.update(req.body, {
             where: { id: id }
         })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Barang was updated successfully."
+                    message: "Admin was updated successfully."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Barang with id=${id}. Maybe Barang was not found or req.body is empty!`
+                    message: `Cannot update Admin with id=${id}. Maybe Admin was not found or req.body is empty!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Barang with id=" + id
+                message: "Error updating Admin with id=" + id
             });
         });
 };
 
-// Delete a Barang with the specified id in the request
+// Delete a Admin with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id_barang;
+    const id = req.params.id;
 
-    Barang.destroy({
+    Admin.destroy({
             where: { id: id }
         })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Barang was deleted successfully!"
+                    message: "Admin was deleted successfully!"
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Barang with id=${id}. Maybe Barang was not found!`
+                    message: `Cannot delete Admin with id=${id}. Maybe Admin was not found!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete Barang with id=" + id
+                message: "Could not delete Admin with id=" + id
             });
         });
 };

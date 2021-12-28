@@ -1,9 +1,9 @@
-const { barangs } = require('../models');
+const { pembayarans } = require('../models');
 const db = require('../models');
-const Barang = db.barangs;
+const Pembayaran = db.pembayarans;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Barang
+// Create and Save a new Pembayaran
 exports.create = (req, res) => {
     if (!req.body.nama || !req.body.stok || !req.body.harga) {
         res.status(500).send({
@@ -12,13 +12,13 @@ exports.create = (req, res) => {
         return;
     }
 
-    const barangs = {
+    const pembayarans = {
         nama: req.body.nama,
         harga: req.body.harga,
         stok: req.body.stok
     };
 
-    Barang.create(barangs)
+    Pembayaran.create(pembayarans)
         .then(data => {
             res.send({ status: 'success', data: data });
         })
@@ -36,7 +36,7 @@ exports.findAll = (req, res) => {
         }
     } : null;
 
-    Barang.findAll({ where: condition })
+    Pembayaran.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
@@ -45,11 +45,11 @@ exports.findAll = (req, res) => {
         });
 };
 
-// Find a single Barang with an id
+// Find a single Pembayaran with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id_barang;
+    const id = req.params.id_pembayaran;
 
-    Barang.findOne({ where: { id: id } })
+    Pembayaran.findOne({ where: { id: id } })
         .then(data => {
             res.send(data)
         })
@@ -58,52 +58,52 @@ exports.findOne = (req, res) => {
         })
 };
 
-// Update a Barang by the id in the request
+// Update a Pembayaran by the id in the request
 exports.update = (req, res) => {
-    const id = req.params.id_barang;
+    const id = req.params.id_pembayaran;
 
-    Barang.update(req.body, {
+    Pembayaran.update(req.body, {
             where: { id: id }
         })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Barang was updated successfully."
+                    message: "Pembayaran was updated successfully."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Barang with id=${id}. Maybe Barang was not found or req.body is empty!`
+                    message: `Cannot update Pembayaran with id=${id}. Maybe Pembayaran was not found or req.body is empty!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Barang with id=" + id
+                message: "Error updating Pembayaran with id=" + id
             });
         });
 };
 
-// Delete a Barang with the specified id in the request
+// Delete a Pembayaran with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id_barang;
+    const id = req.params.id_pembayaran;
 
-    Barang.destroy({
+    Pembayaran.destroy({
             where: { id: id }
         })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Barang was deleted successfully!"
+                    message: "Pembayaran was deleted successfully!"
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Barang with id=${id}. Maybe Barang was not found!`
+                    message: `Cannot delete Pembayaran with id=${id}. Maybe Pembayaran was not found!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete Barang with id=" + id
+                message: "Could not delete Pembayaran with id=" + id
             });
         });
 };
