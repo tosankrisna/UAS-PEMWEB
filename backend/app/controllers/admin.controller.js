@@ -61,7 +61,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const nip = req.params.nip;
 
-  Admin.findOne({ where: { id: nip } })
+  Admin.findOne({ where: { nip: nip } })
     .then((data) => {
       res.send(data);
     })
@@ -75,7 +75,7 @@ exports.update = (req, res) => {
   const nip = req.params.nip;
 
   Admin.update(req.body, {
-    where: { id: nip },
+    where: { nip: nip },
   })
     .then((num) => {
       if (num == 1) {
@@ -84,13 +84,13 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot update Admin with nip=${id}. Maybe Admin was not found or req.body is empty!`,
+          message: `Cannot update Admin with nip=${nip}. Maybe Admin was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Admin with id=" + id,
+        message: "Error updating Admin with nip=" + nip,
       });
     });
 };
@@ -100,7 +100,7 @@ exports.delete = (req, res) => {
   const nip = req.params.nip;
 
   Admin.destroy({
-    where: { id: nip },
+    where: { nip: nip },
   })
     .then((num) => {
       if (num == 1) {
@@ -109,13 +109,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete Admin with id=${id}. Maybe Admin was not found!`,
+          message: `Cannot delete Admin with nip=${nip}. Maybe Admin was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Admin with id=" + id,
+        message: "Could not delete Admin with nip=" + nip,
       });
     });
 };

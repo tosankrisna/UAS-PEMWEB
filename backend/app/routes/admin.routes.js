@@ -1,22 +1,22 @@
-module.exports = app => {
-    const admins = require('../controllers/admin.controller');
+module.exports = (app) => {
+  const admins = require("../controllers/admin.controller");
 
-    const router = require('express').Router();
+  const router = require("express").Router();
 
-    // Create a new Admin
-    router.post("/add", admins.create);
+  // Create a new Admin
+  router.post("/add", admins.create);
 
-    // Retrieve all Admins
-    router.get("/", admins.findAll);
+  // Retrieve all Admins
+  router.get("/", admins.findAll);
 
-    // Retrieve a single Admin with id
-    router.get("/:id", admins.findOne);
+  // Retrieve a single Admin with id
+  router.get("/:nip", admins.findOne);
 
-    // Update a Admin with id
-    router.put("/update/:id", admins.update);
+  // Update a Admin with id
+  router.put("/update/:nip", admins.update);
 
-    // Delete a Admin with id
-    router.delete("/delete/:id", admins.delete);
+  // Delete a Admin with id
+  router.delete("/delete/:nip", admins.delete);
 
-    app.use('/api/admin', router);
+  app.use("/api/admin", router);
 };

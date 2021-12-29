@@ -30,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(data, index) in kasir" :key="data.id">
+          <tr v-for="(data, index) in kasir.slice().reverse()" :key="data.id">
             <td>{{ index + 1 }}</td>
             <td>{{ data.nip }}</td>
             <td>{{ data.nama }}</td>
@@ -42,9 +42,12 @@
                 :to="{ name: 'EditKasir', params: { nip: data.nip } }"
                 >Edit</router-link
               >
-              <router-link class="btn btn-sm btn-danger" to="#"
-                >Delete</router-link
+              <button
+                class="btn btn-sm btn-danger"
+                @click="deleteKasir(data.nip)"
               >
+                Delete
+              </button>
             </td>
           </tr>
         </tbody>
@@ -75,12 +78,25 @@ export default {
     Pagination,
   },
   methods: {
-    async getAllKasir() {
+    getAllKasir() {
       try {
-        const response = await axios.get("http://localhost:8080/api/admin/");
-        this.kasir = response.data;
+        axios
+          .get("http://localhost:8080/api/admin/")
+          .then((res) => (this.kasir = res.data));
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
+      }
+    },
+    deleteKasir(nip) {
+      try {
+        axios
+          .delete(`http://localhost:8080/api/admin/delete/${nip}`)
+          .then(
+            (res) =>
+              (this.kasir = this.kasir.filter((item) => item.nip !== nip))
+          );
+      } catch (error) {
+        console.log(error);
       }
     },
   },
