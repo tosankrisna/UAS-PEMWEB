@@ -7,10 +7,10 @@
           <div class="mb-3">
             <label for="kode" class="form-label">Kode Barang</label>
             <div class="row">
-              <div class="col-8 col-md-10 col-xl-11">
+              <div class="col col-md-9 col-xl-10">
                 <input type="text" class="form-control" id="kode" />
               </div>
-              <div class="col-4 col-md-2 col-xl-1">
+              <div class="col">
                 <a href="#" class="btn btn-md btn-primary"
                   ><i class="fas fa-search"></i
                 ></a>
@@ -63,7 +63,9 @@
   <Table class="mt-1">
     <template v-slot:header>Keranjang Belanja</template>
     <template v-slot:addButton>
-      <button class="btn btn-primary btn-md mb-3 mr-2">Proses Transaksi</button>
+      <button class="btn btn-primary btn-md mb-3 mr-2" @click="goToPrint">
+        Proses & Cetak Struk
+      </button>
       <button class="btn btn-danger btn-md mb-3">Reset</button>
     </template>
     <template v-slot:content>
@@ -117,6 +119,13 @@ import Card from "@/components/Card.vue";
 import Table from "@/components/Table.vue";
 export default {
   components: { Card, Table },
+  methods: {
+    goToPrint() {
+      let route = this.$router.resolve({ name: "StrukTransaksi" });
+      const struk = window.open(route.href, "", "status=0");
+      struk.print();
+    },
+  },
 };
 </script>
 

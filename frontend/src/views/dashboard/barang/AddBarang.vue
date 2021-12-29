@@ -26,7 +26,7 @@
         </div>
         <div class="mb-3">
           <button type="submit" class="btn btn-primary mr-3">Submit</button>
-          <router-link to="/" class="btn btn-danger">Batal</router-link>
+          <router-link to="/barang" class="btn btn-danger">Batal</router-link>
         </div>
       </form>
     </template>

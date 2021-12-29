@@ -30,16 +30,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>123456</td>
-            <td>Andi Sentosa</td>
-            <td>Laki-Laki</td>
-            <td>Jalan Waturenggong Gang 3 No.5A</td>
+          <tr v-for="(data, index) in kasir" :key="data.id">
+            <td>{{ index + 1 }}</td>
+            <td>{{ data.nip }}</td>
+            <td>{{ data.nama }}</td>
+            <td>{{ data.jenis_kelamin }}</td>
+            <td>{{ data.alamat }}</td>
             <td>
               <router-link
                 class="btn btn-sm btn-warning mr-2"
-                :to="{ name: 'EditKasir' }"
+                :to="{ name: 'EditKasir', params: { nip: data.nip } }"
                 >Edit</router-link
               >
               <router-link class="btn btn-sm btn-danger" to="#"
@@ -57,12 +57,35 @@
 </template>
 
 <script>
+import axios from "axios";
 import Table from "@/components/Table.vue";
 import Search from "@/components/Search.vue";
 import Pagination from "@/components/Pagination.vue";
 
 export default {
   name: "Kasir",
-  components: { Table, Search, Pagination },
+  data() {
+    return {
+      kasir: [],
+    };
+  },
+  components: {
+    Table,
+    Search,
+    Pagination,
+  },
+  methods: {
+    async getAllKasir() {
+      try {
+        const response = await axios.get("http://localhost:8080/api/admin/");
+        this.kasir = response.data;
+      } catch (error) {
+        console.log(error.message);
+      }
+    },
+  },
+  mounted() {
+    this.getAllKasir();
+  },
 };
 </script>

@@ -34,7 +34,7 @@ const routes = [
     component: AddKasir,
   },
   {
-    path: "/edit-kasir",
+    path: "/edit-kasir/:nip",
     name: "EditKasir",
     component: EditKasir,
   },
