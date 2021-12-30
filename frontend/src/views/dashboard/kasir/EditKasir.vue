@@ -87,7 +87,7 @@ export default {
     getKasirById() {
       try {
         axios
-          .get(`http://localhost:8080/api/admin/${this.$route.params.nip}`)
+          .get(`http://localhost:3000/api/admin/${this.$route.params.nip}`)
           .then(
             (res) =>
               (this.kasir = {
@@ -106,7 +106,7 @@ export default {
       try {
         axios
           .put(
-            `http://localhost:8080/api/admin/update/${this.$route.params.nip}`,
+            `http://localhost:3000/api/admin/update/${this.$route.params.nip}`,
             this.kasir
           )
           .then(() => this.$router.push("/"));

@@ -78,7 +78,7 @@ export default {
     addKasir() {
       try {
         axios
-          .post("http://localhost:8080/api/admin/add", this.kasir)
+          .post("http://localhost:3000/api/admin/add", this.kasir)
           .then(() => {
             this.$router.push("/");
           });

@@ -81,7 +81,7 @@ export default {
     getAllKasir() {
       try {
         axios
-          .get("http://localhost:8080/api/admin/")
+          .get("http://localhost:3000/api/admin/")
           .then((res) => (this.kasir = res.data));
       } catch (error) {
         console.log(error);
@@ -90,7 +90,7 @@ export default {
     deleteKasir(nip) {
       try {
         axios
-          .delete(`http://localhost:8080/api/admin/delete/${nip}`)
+          .delete(`http://localhost:3000/api/admin/delete/${nip}`)
           .then(
             (res) =>
               (this.kasir = this.kasir.filter((item) => item.nip !== nip))
