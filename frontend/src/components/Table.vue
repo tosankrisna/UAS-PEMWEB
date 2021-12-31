@@ -24,9 +24,6 @@
                 <slot name="content"></slot>
               </div>
             </div>
-            <div class="row">
-              <slot name="pagination"></slot>
-            </div>
           </div>
         </div>
       </div>

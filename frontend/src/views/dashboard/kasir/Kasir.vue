@@ -53,9 +53,6 @@
         </tbody>
       </table>
     </template>
-    <template v-slot:pagination>
-      <Pagination />
-    </template>
   </Table>
 </template>
 
@@ -63,7 +60,6 @@
 import axios from "axios";
 import Table from "@/components/Table.vue";
 import Search from "@/components/Search.vue";
-import Pagination from "@/components/Pagination.vue";
 
 export default {
   name: "Kasir",
@@ -76,7 +72,6 @@ export default {
   components: {
     Table,
     Search,
-    Pagination,
   },
   methods: {
     getAllKasir() {
