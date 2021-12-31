@@ -2,7 +2,7 @@
   <Table>
     <template v-slot:header>Data Kasir</template>
     <template v-slot:search>
-      <Search />
+      <Search @search-data="searchKasir" />
     </template>
     <template v-slot:addButton>
       <router-link to="/add-kasir" class="btn btn-primary btn-md"
@@ -70,6 +70,7 @@ export default {
   data() {
     return {
       kasir: [],
+      search: "",
     };
   },
   components: {
@@ -95,6 +96,15 @@ export default {
             (res) =>
               (this.kasir = this.kasir.filter((item) => item.nip !== nip))
           );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    searchKasir(search) {
+      try {
+        axios
+          .get(`http://localhost:8080/api/admin?nama=${search}`)
+          .then((res) => (this.kasir = res.data));
       } catch (error) {
         console.log(error);
       }

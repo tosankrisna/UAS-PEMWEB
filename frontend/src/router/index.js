@@ -49,7 +49,7 @@ const routes = [
     component: AddBarang,
   },
   {
-    path: "/edit-barang",
+    path: "/edit-barang/:kode_barang",
     name: "EditBarang",
     component: EditBarang,
   },
