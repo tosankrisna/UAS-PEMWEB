@@ -2,7 +2,7 @@
   <Table>
     <template v-slot:header>Data Barang</template>
     <template v-slot:search>
-      <Search />
+      <Search @search-data="searchBarang" />
     </template>
     <template v-slot:addButton>
       <router-link :to="{ name: 'AddBarang' }" class="btn btn-primary btn-md"
@@ -100,6 +100,15 @@ export default {
                 (item) => item.kode_barang !== kode_barang
               ))
           );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    searchBarang(search) {
+      try {
+        axios
+          .get(`http://localhost:8080/api/barang?search=${search}`)
+          .then((res) => (this.barang = res.data));
       } catch (error) {
         console.log(error);
       }

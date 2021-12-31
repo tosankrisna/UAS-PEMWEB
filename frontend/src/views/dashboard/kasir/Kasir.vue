@@ -103,7 +103,7 @@ export default {
     searchKasir(search) {
       try {
         axios
-          .get(`http://localhost:8080/api/admin?nama=${search}`)
+          .get(`http://localhost:8080/api/admin?search=${search}`)
           .then((res) => (this.kasir = res.data));
       } catch (error) {
         console.log(error);

@@ -35,12 +35,21 @@ exports.create = (req, res) => {
 
 // Retrieve all barang from the database.
 exports.findAll = (req, res) => {
-  const nama = req.query.nama;
-  const condition = nama
+  const search = req.query.search;
+  const condition = search
     ? {
-        nama: {
-          [Op.like]: `%${nama}%`,
-        },
+        [Op.or]: [
+          {
+            kode_barang: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+          {
+            nama: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
       }
     : null;
 
