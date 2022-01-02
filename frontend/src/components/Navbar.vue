@@ -38,9 +38,9 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-            >Douglas McGee</span
-          >
+          <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{
+            name
+          }}</span>
           <img class="img-profile rounded-circle" src="/images/person.png" />
         </span>
         <!-- Dropdown - User Information -->
@@ -70,10 +70,13 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
       isShow: false,
+      name: "",
     };
   },
   methods: {
@@ -83,6 +86,15 @@ export default {
     showDropdown() {
       this.isShow = !this.isShow;
     },
+    async getUserName() {
+      const nip = localStorage.getItem("nip");
+      const res = await axios.get(`http://localhost:8080/api/admin/${nip}`);
+      console.log(res.data.nama);
+      this.name = res.data.nama;
+    },
+  },
+  mounted() {
+    this.getUserName();
   },
 };
 </script>

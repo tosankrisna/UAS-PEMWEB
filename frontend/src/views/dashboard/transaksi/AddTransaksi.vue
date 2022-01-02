@@ -8,10 +8,16 @@
             <label for="kode" class="form-label">Kode Barang</label>
             <div class="row">
               <div class="col col-md-9 col-xl-10">
-                <input type="text" class="form-control" id="kode" />
+                <input
+                  type="number"
+                  class="form-control"
+                  id="kode"
+                  v-model="search"
+                  @keyup.enter="searchBarang"
+                />
               </div>
               <div class="col">
-                <a href="#" class="btn btn-md btn-primary"
+                <a href="#" @click="searchBarang" class="btn btn-md btn-primary"
                   ><i class="fas fa-search"></i
                 ></a>
               </div>
@@ -19,15 +25,33 @@
           </div>
           <div class="mb-3">
             <label for="nama_barang" class="form-label">Nama Barang</label>
-            <input type="text" class="form-control" id="nama_barang" disabled />
+            <input
+              type="text"
+              class="form-control"
+              id="nama_barang"
+              :value="barang.nama"
+              disabled
+            />
           </div>
           <div class="mb-3">
             <label for="stok" class="form-label">Stok Barang</label>
-            <input type="number" class="form-control" id="stok" disabled />
+            <input
+              type="number"
+              class="form-control"
+              id="stok"
+              :value="barang.stok"
+              disabled
+            />
           </div>
           <div class="mb-3">
-            <label for="stok" class="form-label">Harga Satuan</label>
-            <input type="number" class="form-control" id="stok" disabled />
+            <label for="harga" class="form-label">Harga Satuan</label>
+            <input
+              type="number"
+              class="form-control"
+              id="harga"
+              :value="barang.harga"
+              disabled
+            />
           </div>
           <div class="mb-3">
             <label for="jumlah" class="form-label">Jumlah Beli</label>
@@ -115,11 +139,34 @@
 </template>
 
 <script>
+import axios from "axios";
 import Card from "@/components/Card.vue";
 import Table from "@/components/Table.vue";
+
 export default {
+  data() {
+    return {
+      search: "",
+      barang: {},
+    };
+  },
   components: { Card, Table },
   methods: {
+    searchBarang() {
+      try {
+        axios.get(`http://localhost:8080/api/barang/${this.search}`).then(
+          (res) =>
+            (this.barang = {
+              kode_barang: res.data.kode_barang,
+              nama: res.data.nama,
+              stok: res.data.stok,
+              harga: res.data.harga,
+            })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
     goToPrint() {
       let route = this.$router.resolve({ name: "StrukTransaksi" });
       const struk = window.open(route.href, "", "status=0");

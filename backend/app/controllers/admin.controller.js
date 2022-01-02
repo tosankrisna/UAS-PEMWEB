@@ -75,7 +75,7 @@ exports.findOne = (req, res) => {
       res.send(data);
     })
     .catch((error) => {
-      res.status(404).send({ status: error.message || "Note not found" });
+      res.status(404).send({ status: error.message || "User not found" });
     });
 };
 
@@ -126,5 +126,22 @@ exports.delete = (req, res) => {
       res.status(500).send({
         message: "Could not delete Admin with nip=" + nip,
       });
+    });
+};
+
+exports.login = (req, res) => {
+  const nip = req.query.nip;
+  const password = req.query.password;
+
+  Admin.findOne({
+    where: {
+      [Op.and]: [{ nip: nip }, { password: password }],
+    },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      res.status(404).send({ status: error.message || "User not found" });
     });
 };

@@ -29,7 +29,7 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="text-capitalize">
           <tr v-for="(data, index) in barang.slice().reverse()" :key="data.id">
             <td>{{ index + 1 }}</td>
             <td>{{ data.kode_barang }}</td>

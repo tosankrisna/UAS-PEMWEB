@@ -6,6 +6,8 @@ module.exports = (app) => {
   // Create a new Admin
   router.post("/add", admins.create);
 
+  router.get("/login", admins.login);
+
   // Retrieve all Admins
   router.get("/", admins.findAll);
 

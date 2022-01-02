@@ -2,7 +2,7 @@
   <Table>
     <template v-slot:header>Data Transaksi</template>
     <template v-slot:search>
-      <Search />
+      <Search @search-data="searchBarang" />
     </template>
     <template v-slot:content>
       <table
@@ -43,19 +43,16 @@
         </tbody>
       </table>
     </template>
-    <template v-slot:pagination>
-      <Pagination />
-    </template>
   </Table>
 </template>
 
 <script>
+import axios from "axios";
 import Table from "@/components/Table.vue";
 import Search from "@/components/Search.vue";
-import Pagination from "@/components/Pagination.vue";
 
 export default {
-  components: { Table, Search, Pagination },
+  components: { Table, Search },
   methods: {
     goToPrint() {
       let route = this.$router.resolve({ name: "StrukTransaksi" });

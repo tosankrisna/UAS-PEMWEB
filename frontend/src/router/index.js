@@ -80,4 +80,12 @@ const router = createRouter({
   routes,
 });
 
+const isAuthenticated = localStorage.getItem("login") === "true";
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== "Login" && !isAuthenticated) next({ name: "Login" });
+  if (to.name === "Login" && isAuthenticated) next({ name: "Kasir" });
+  else next();
+});
+
 export default router;
