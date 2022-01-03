@@ -11,6 +11,7 @@
             id="nip"
             name="nip"
             v-model="kasir.nip"
+            readonly
           />
         </div>
         <div class="mb-3">
@@ -75,13 +76,13 @@ export default {
   },
   components: { Card },
   methods: {
-    addKasir() {
+    async addKasir() {
       try {
-        axios
-          .post("http://localhost:8080/api/admin/add", this.kasir)
-          .then(() => {
-            this.$router.push("/");
-          });
+        const res = await axios.post(
+          "http://localhost:8080/api/admin/add",
+          this.kasir
+        );
+        this.$router.push("/");
       } catch (error) {
         console.log(error);
       }

@@ -11,6 +11,7 @@
             id="nip"
             name="nip"
             v-model="kasir.nip"
+            readonly
           />
         </div>
         <div class="mb-3">
@@ -20,15 +21,6 @@
             class="form-control"
             id="nama"
             v-model="kasir.nama"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            v-model="kasir.password"
           />
         </div>
         <div class="mb-4">
@@ -84,32 +76,29 @@ export default {
     };
   },
   methods: {
-    getKasirById() {
+    async getKasirById() {
       try {
-        axios
-          .get(`http://localhost:8080/api/admin/${this.$route.params.nip}`)
-          .then(
-            (res) =>
-              (this.kasir = {
-                nip: res.data.nip,
-                nama: res.data.nama,
-                password: res.data.password,
-                jenis_kelamin: res.data.jenis_kelamin,
-                alamat: res.data.alamat,
-              })
-          );
+        const res = await axios.get(
+          `http://localhost:8080/api/admin/${this.$route.params.nip}`
+        );
+        this.kasir = {
+          nip: res.data.nip,
+          nama: res.data.nama,
+          password: res.data.password,
+          jenis_kelamin: res.data.jenis_kelamin,
+          alamat: res.data.alamat,
+        };
       } catch (error) {
         console.log(error);
       }
     },
-    updateKasir() {
+    async updateKasir() {
       try {
-        axios
-          .put(
-            `http://localhost:8080/api/admin/update/${this.$route.params.nip}`,
-            this.kasir
-          )
-          .then(() => this.$router.push("/"));
+        const res = await axios.put(
+          `http://localhost:8080/api/admin/update/${this.$route.params.nip}`,
+          this.kasir
+        );
+        this.$router.push("/");
       } catch (error) {
         console.log(error);
       }

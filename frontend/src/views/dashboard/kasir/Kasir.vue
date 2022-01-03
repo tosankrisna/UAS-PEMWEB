@@ -74,32 +74,30 @@ export default {
     Search,
   },
   methods: {
-    getAllKasir() {
+    async getAllKasir() {
       try {
-        axios
-          .get("http://localhost:8080/api/admin/")
-          .then((res) => (this.kasir = res.data));
+        const res = await axios.get("http://localhost:8080/api/admin/");
+        this.kasir = res.data;
       } catch (error) {
         console.log(error);
       }
     },
-    deleteKasir(nip) {
+    async deleteKasir(nip) {
       try {
-        axios
-          .delete(`http://localhost:8080/api/admin/delete/${nip}`)
-          .then(
-            (res) =>
-              (this.kasir = this.kasir.filter((item) => item.nip !== nip))
-          );
+        const res = await axios.delete(
+          `http://localhost:8080/api/admin/delete/${nip}`
+        );
+        this.kasir = this.kasir.filter((item) => item.nip !== nip);
       } catch (error) {
         console.log(error);
       }
     },
-    searchKasir(search) {
+    async searchKasir(search) {
       try {
-        axios
-          .get(`http://localhost:8080/api/admin?search=${search}`)
-          .then((res) => (this.kasir = res.data));
+        const res = await axios.get(
+          `http://localhost:8080/api/admin?search=${search}`
+        );
+        this.kasir = res.data;
       } catch (error) {
         console.log(error);
       }

@@ -76,34 +76,30 @@ export default {
     Search,
   },
   methods: {
-    getAllBarang() {
+    async getAllBarang() {
       try {
-        axios
-          .get("http://localhost:8080/api/barang")
-          .then((res) => (this.barang = res.data));
+        const res = await axios.get("http://localhost:8080/api/barang");
+        this.barang = res.data;
       } catch (error) {
         console.log(error);
       }
     },
-    deleteBarang(kode_barang) {
+    async deleteBarang(kode_barang) {
       try {
-        axios
-          .delete(`http://localhost:8080/api/barang/delete/${kode_barang}`)
-          .then(
-            () =>
-              (this.barang = this.barang.filter(
-                (item) => item.kode_barang !== kode_barang
-              ))
-          );
+        await axios.delete(
+          `http://localhost:8080/api/barang/delete/${kode_barang}`
+        );
+        this.barang = this.barang.filter(
+          (item) => item.kode_barang !== kode_barang
+        );
       } catch (error) {
         console.log(error);
       }
     },
-    searchBarang(search) {
+    async searchBarang(search) {
       try {
-        axios
-          .get(`http://localhost:8080/api/barang?search=${search}`)
-          .then((res) => (this.barang = res.data));
+        await axios.get(`http://localhost:8080/api/barang?search=${search}`);
+        this.barang = res.data;
       } catch (error) {
         console.log(error);
       }

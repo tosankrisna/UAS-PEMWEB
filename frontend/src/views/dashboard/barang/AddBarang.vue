@@ -68,11 +68,13 @@ export default {
   },
   components: { Card },
   methods: {
-    addBarang() {
+    async addBarang() {
       try {
-        axios
-          .post("http://localhost:8080/api/barang/add", this.barang)
-          .then(() => this.$router.push("/barang"));
+        const res = await axios.post(
+          "http://localhost:8080/api/barang/add",
+          this.barang
+        );
+        this.$router.push("/barang");
       } catch (error) {
         console.log(error);
       }

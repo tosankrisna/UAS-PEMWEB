@@ -68,32 +68,28 @@ export default {
   },
   components: { Card },
   methods: {
-    getBarangById() {
+    async getBarangById() {
       try {
-        axios
-          .get(
-            `http://localhost:8080/api/barang/${this.$route.params.kode_barang}`
-          )
-          .then((res) => {
-            this.barang = {
-              kode_barang: res.data.kode_barang,
-              nama: res.data.nama,
-              stok: res.data.stok,
-              harga: res.data.harga,
-            };
-          });
+        const res = await axios.get(
+          `http://localhost:8080/api/barang/${this.$route.params.kode_barang}`
+        );
+        this.barang = {
+          kode_barang: res.data.kode_barang,
+          nama: res.data.nama,
+          stok: res.data.stok,
+          harga: res.data.harga,
+        };
       } catch (error) {
         console.log(error);
       }
     },
-    updateBarang() {
+    async updateBarang() {
       try {
-        axios
-          .put(
-            `http://localhost:8080/api/barang/edit/${this.$route.params.kode_barang}`,
-            this.barang
-          )
-          .then(() => this.$router.push("/barang"));
+        const res = await axios.put(
+          `http://localhost:8080/api/barang/edit/${this.$route.params.kode_barang}`,
+          this.barang
+        );
+        this.$router.push("/barang");
       } catch (error) {
         console.log(error);
       }
