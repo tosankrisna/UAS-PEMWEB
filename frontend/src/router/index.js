@@ -19,7 +19,7 @@ const routes = [
     component: Login,
   },
   {
-    path: "/profil",
+    path: "/profil/:nip",
     name: "Profil",
     component: Profil,
   },
