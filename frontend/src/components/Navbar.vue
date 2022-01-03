@@ -49,7 +49,10 @@
           :class="{ show: isShow }"
           aria-labelledby="userDropdown"
         >
-          <router-link :to="{ name: 'Profil' }" class="dropdown-item">
+          <router-link
+            :to="{ name: 'Profil', params: { nip: nip } }"
+            class="dropdown-item"
+          >
             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
             Profile
           </router-link>
@@ -77,6 +80,7 @@ export default {
     return {
       isShow: false,
       name: "",
+      nip: localStorage.getItem("nip"),
     };
   },
   methods: {
@@ -87,8 +91,9 @@ export default {
       this.isShow = !this.isShow;
     },
     async getUserName() {
-      const nip = localStorage.getItem("nip");
-      const res = await axios.get(`http://localhost:8080/api/admin/${nip}`);
+      const res = await axios.get(
+        `http://localhost:8080/api/admin/${this.nip}`
+      );
       this.name = res.data.nama;
     },
     logoutUser() {
@@ -97,8 +102,10 @@ export default {
       this.$router.push("/login");
     },
   },
-  mounted() {
-    this.getUserName();
+  watch: {
+    $route(to, from) {
+      this.getUserName();
+    },
   },
 };
 </script>
