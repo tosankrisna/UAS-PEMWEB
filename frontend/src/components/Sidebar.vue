@@ -4,7 +4,6 @@
     :class="{ toggled: isToggle }"
     id="accordionSidebar"
   >
-    <!-- Sidebar - Brand -->
     <router-link
       class="sidebar-brand d-flex align-items-center justify-content-center"
       to="/"
@@ -20,13 +19,13 @@
     <hr class="sidebar-divider" />
 
     <div class="sidebar-heading text-white">Menu</div>
-    <li class="nav-item">
+    <li class="nav-item" v-if="level === 'kasir'">
       <router-link class="nav-link" :to="{ name: 'Kasir' }">
         <i class="fas fa-user fa-cog text-white"></i>
         <span class="ml-md-3 text-white">Kasir</span>
       </router-link>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" v-if="level === 'kasir'">
       <router-link class="nav-link" :to="{ name: 'Barang' }">
         <i class="fas fa-shopping-bag fa-cog text-white"></i>
         <span class="ml-md-3 text-white">Barang</span>
@@ -72,12 +71,19 @@ export default {
   data() {
     return {
       showSubMenu: false,
+      level: "",
     };
   },
   methods: {
+    getLevel() {
+      this.level = localStorage.getItem("level");
+    },
     toggleSubMenu() {
       this.showSubMenu = !this.showSubMenu;
     },
+  },
+  mounted() {
+    this.getLevel();
   },
 };
 </script>

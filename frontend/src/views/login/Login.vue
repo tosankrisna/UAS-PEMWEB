@@ -47,10 +47,12 @@ export default {
         `http://localhost:8080/api/admin/login?nip=${this.nip}&password=${this.password}`
       );
       if (res.data) {
-        localStorage.setItem("login", "true");
-        localStorage.setItem("nip", JSON.stringify(res.data.nip));
+        this.$router.push("/");
+        localStorage.setItem("login", true);
+        localStorage.setItem("nip", res.data.nip);
+        localStorage.setItem("level", res.data.level);
       } else {
-        console.log("false");
+        alert("Username atau password salah!");
       }
     },
   },

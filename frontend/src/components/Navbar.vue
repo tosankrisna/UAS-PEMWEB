@@ -54,15 +54,15 @@
             Profile
           </router-link>
           <div class="dropdown-divider"></div>
-          <router-link
-            :to="{ name: 'Login' }"
+          <button
             class="dropdown-item"
             data-toggle="modal"
             data-target="#logoutModal"
+            @click="logoutUser"
           >
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             Logout
-          </router-link>
+          </button>
         </div>
       </li>
     </ul>
@@ -89,8 +89,12 @@ export default {
     async getUserName() {
       const nip = localStorage.getItem("nip");
       const res = await axios.get(`http://localhost:8080/api/admin/${nip}`);
-      console.log(res.data.nama);
       this.name = res.data.nama;
+    },
+    logoutUser() {
+      const remove = ["login", "nip", "level"];
+      remove.forEach((item) => localStorage.removeItem(item));
+      this.$router.push("/login");
     },
   },
   mounted() {
