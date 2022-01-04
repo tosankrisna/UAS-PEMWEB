@@ -89,11 +89,23 @@
           </div>
           <div class="mb-3">
             <label for="bayar" class="form-label">Bayar</label>
-            <input type="number" class="form-control" id="Bayar" />
+            <input
+              type="number"
+              class="form-control"
+              id="Bayar"
+              v-model="bayar"
+              @input="setKembalian"
+            />
           </div>
           <div class="mb-3">
             <label for="kembalian" class="form-label">Kembalian</label>
-            <input type="number" class="form-control" id="kembalian" disabled />
+            <input
+              type="number"
+              class="form-control"
+              id="kembalian"
+              v-model="kembalian"
+              disabled
+            />
           </div>
         </template>
       </Card>
@@ -168,8 +180,10 @@ export default {
         harga: null,
         jumlah_beli: null,
       },
-      total: 0,
       cart: [],
+      total: 0,
+      bayar: "",
+      kembalian: 0,
       invalid: false,
     };
   },
@@ -246,6 +260,13 @@ export default {
     deleteItem(i) {
       this.cart = this.cart.filter((item, index) => index !== i);
       this.totalHarga();
+    },
+    setKembalian() {
+      if (this.bayar !== "") {
+        this.kembalian = this.bayar - this.total;
+      } else {
+        this.kembalian = 0;
+      }
     },
   },
 };
