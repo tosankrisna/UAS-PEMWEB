@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
@@ -52,7 +53,12 @@ export default {
         localStorage.setItem("nip", res.data.nip);
         localStorage.setItem("level", res.data.level);
       } else {
-        alert("Username atau password salah!");
+        Swal.fire({
+          title: "Error!",
+          text: "Username atau password salah!",
+          icon: "error",
+          confirmButtonText: "Confirm",
+        });
       }
     },
   },

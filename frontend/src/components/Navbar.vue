@@ -107,6 +107,9 @@ export default {
       this.getUserName();
     },
   },
+  mounted() {
+    this.getUserName();
+  },
 };
 </script>
 

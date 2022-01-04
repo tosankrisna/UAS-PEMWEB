@@ -30,7 +30,10 @@
           </tr>
         </thead>
         <tbody class="text-capitalize">
-          <tr v-for="(data, index) in kasir.slice().reverse()" :key="data.id">
+          <tr
+            v-for="(data, index) in isNotAdmin.slice().reverse()"
+            :key="data.id"
+          >
             <td>{{ index + 1 }}</td>
             <td>{{ data.nip }}</td>
             <td>{{ data.nama }}</td>
@@ -57,6 +60,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import axios from "axios";
 import Table from "@/components/Table.vue";
 import Search from "@/components/Search.vue";
@@ -82,15 +86,50 @@ export default {
         console.log(error);
       }
     },
-    async deleteKasir(nip) {
-      try {
-        const res = await axios.delete(
-          `http://localhost:8080/api/admin/delete/${nip}`
-        );
-        this.kasir = this.kasir.filter((item) => item.nip !== nip);
-      } catch (error) {
-        console.log(error);
-      }
+    deleteKasir(nip) {
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-primary",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Delete",
+          cancelButtonText: "Cancel",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            axios
+              .delete(`http://localhost:8080/api/admin/delete/${nip}`)
+              .then(() => {
+                this.kasir = this.kasir.filter((item) => item.nip !== nip);
+
+                swalWithBootstrapButtons.fire(
+                  "Deleted!",
+                  "Your data has been deleted.",
+                  "success"
+                );
+              })
+              .catch((err) => console.log(err));
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire(
+              "Cancelled",
+              "Your data is safe :)",
+              "error"
+            );
+          }
+        });
     },
     async searchKasir(search) {
       try {
@@ -103,8 +142,21 @@ export default {
       }
     },
   },
+  computed: {
+    isNotAdmin() {
+      return this.kasir.filter((item) => {
+        return item.level !== "admin";
+      });
+    },
+  },
   mounted() {
     this.getAllKasir();
   },
 };
 </script>
+
+<style>
+.swal2-actions .swal2-cancel {
+  margin-right: 10px !important;
+}
+</style>
