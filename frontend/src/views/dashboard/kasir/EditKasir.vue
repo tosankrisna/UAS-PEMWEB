@@ -11,7 +11,6 @@
             id="nip"
             name="nip"
             v-model="kasir.nip"
-            readonly
           />
         </div>
         <div class="mb-3">
