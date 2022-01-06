@@ -1,109 +1,113 @@
-const { pembayarans } = require('../models');
-const db = require('../models');
+const { pembayarans } = require("../models");
+const db = require("../models");
 const Pembayaran = db.pembayarans;
+const Barang = db.barangs;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Pembayaran
 exports.create = (req, res) => {
-    if (!req.body.nama || !req.body.stok || !req.body.harga) {
-        res.status(500).send({
-            message: 'Please fill all forms'
-        });
-        return;
-    }
+  if (
+    !req.body.kode_pembayaran ||
+    !req.body.tgl_pembayaran ||
+    !req.body.bayar ||
+    !req.body.kembalian ||
+    !req.body.total_harga
+  ) {
+    res.status(500).send({
+      message: "Please fill all forms",
+    });
+    return;
+  }
 
-    const pembayarans = {
-        nama: req.body.nama,
-        harga: req.body.harga,
-        stok: req.body.stok
-    };
+  const pembayarans = {
+    kode_pembayaran: req.body.kode_pembayaran,
+    tgl_pembayaran: req.body.tgl_pembayaran,
+    bayar: req.body.bayar,
+    kembalian: req.body.kembalian,
+    total_harga: req.body.total_harga,
+  };
 
-    Pembayaran.create(pembayarans)
-        .then(data => {
-            res.send({ status: 'success', data: data });
-        })
-        .catch(error => {
-            res.status(500).send({ status: error.message });
-        });
+  Pembayaran.create(pembayarans)
+    .then((data) => {
+      res.send({ status: "success", data: data });
+    })
+    .catch((error) => {
+      res.status(500).send({ status: error.message });
+    });
 };
 
 // Retrieve all barang from the database.
 exports.findAll = (req, res) => {
-    const nama = req.query.nama;
-    const condition = nama ? {
-        nama: {
-            [Op.like]: `%${nama}%`
-        }
-    } : null;
+  const kode_pembayaran = req.query.kode_pembayaran;
+  const condition = kode_pembayaran
+    ? {
+        kode_pembayaran: {
+          [Op.like]: `%${kode_pembayaran}%`,
+        },
+      }
+    : null;
 
-    Pembayaran.findAll({ where: condition })
-        .then(data => {
-            res.send(data);
-        })
-        .catch(error => {
-            res.status(500).send({ status: error.message });
-        });
+  Pembayaran.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      res.status(500).send({ status: error.message });
+    });
 };
 
 // Find a single Pembayaran with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id_pembayaran;
+  const id = req.params.id_pembayaran;
 
-    Pembayaran.findOne({ where: { id: id } })
-        .then(data => {
-            res.send(data)
-        })
-        .catch(error => {
-            res.status(404).send({ status: error.message || 'Note not found' });
-        })
+  return Pembayaran.findByPk(id, {
+    include: [
+      {
+        model: Barang,
+        as: "barangs",
+        attributes: ["id", "kode_barang", "nama", "harga", "stok"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  })
+    .then((pembayaran) => {
+      res.send(pembayaran);
+    })
+    .catch((error) => {
+      res.status(500).send({ status: error.message });
+    });
 };
 
-// Update a Pembayaran by the id in the request
-exports.update = (req, res) => {
-    const id = req.params.id_pembayaran;
+exports.addBarang = (req, res) => {
+  const id_pembayaran = req.params.id_pembayaran;
+  const id_barang = req.params.id_barang;
 
-    Pembayaran.update(req.body, {
-            where: { id: id }
-        })
-        .then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "Pembayaran was updated successfully."
-                });
-            } else {
-                res.send({
-                    message: `Cannot update Pembayaran with id=${id}. Maybe Pembayaran was not found or req.body is empty!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error updating Pembayaran with id=" + id
-            });
+  return Pembayaran.findByPk(id_pembayaran)
+    .then((pembayaran) => {
+      if (!pembayaran) {
+        res.status(500).send({
+          message: "Pembayaran not found",
         });
-};
+        return;
+      }
 
-// Delete a Pembayaran with the specified id in the request
-exports.delete = (req, res) => {
-    const id = req.params.id_pembayaran;
+      return Barang.findByPk(id_barang).then((barang) => {
+        if (!barang) {
+          res.status(500).send({
+            message: "Barang not found",
+          });
+          return;
+        }
 
-    Pembayaran.destroy({
-            where: { id: id }
-        })
-        .then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "Pembayaran was deleted successfully!"
-                });
-            } else {
-                res.send({
-                    message: `Cannot delete Pembayaran with id=${id}. Maybe Pembayaran was not found!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete Pembayaran with id=" + id
-            });
+        pembayaran.addBarang(barang);
+        res.status(200).send({
+          status: `added Barang id=${barang.id} to Pembayaran id=${pembayaran.id}`,
         });
+      });
+    })
+    .catch((error) => {
+      res.status(500).send({ status: error.message });
+    });
 };

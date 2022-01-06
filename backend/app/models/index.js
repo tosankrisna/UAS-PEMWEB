@@ -26,10 +26,16 @@ db.admins = require("./admin.model.js")(sequelize, Sequelize);
 db.barangs = require("./barang.model.js")(sequelize, Sequelize);
 db.pembayarans = require("./pembayaran.model.js")(sequelize, Sequelize);
 
-db.admins.hasMany(db.pembayarans, { as: "pembayarans" });
-db.pembayarans.belongsTo(db.admins, {
-  foreignKey: "adminId",
-  as: "admin",
+db.barangs.belongsToMany(db.pembayarans, {
+  through: "pembayaran_barang",
+  as: "pembayarans",
+  foreignKey: "barang_id",
+});
+
+db.pembayarans.belongsToMany(db.barangs, {
+  through: "pembayaran_barang",
+  as: "barangs",
+  foreignKey: "pembayaran_id",
 });
 
 module.exports = db;
