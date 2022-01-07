@@ -60,13 +60,18 @@
             <label for="jumlah" class="form-label">Jumlah Beli</label>
             <input
               type="number"
+              onkeypress="return event.charCode >= 48"
+              min="1"
               class="form-control"
               v-model="barang.jumlah_beli"
               id="jumlah"
             />
           </div>
           <div class="mb-3">
-            <a class="btn btn-primary mr-3" @click="addToCart"
+            <a class="btn btn-warning mr-3" @click="addToCart" v-if="isEditted"
+              >Update Keranjang</a
+            >
+            <a class="btn btn-primary mr-3" @click="addToCart" v-else
               >Tambah ke Keranjang</a
             >
           </div>
@@ -92,6 +97,8 @@
             <input
               type="number"
               class="form-control"
+              onkeypress="return event.charCode >= 48"
+              min="1"
               id="Bayar"
               v-model="bayar"
               @input="setKembalian"
@@ -152,6 +159,9 @@
             <td>{{ data.harga }}</td>
             <td>{{ data.subTotal }}</td>
             <td>
+              <a class="btn btn-sm btn-warning mr-2" @click="editItem(index)"
+                >Edit</a
+              >
               <a class="btn btn-sm btn-danger mr-2" @click="deleteItem(index)"
                 >Hapus</a
               >
@@ -185,6 +195,8 @@ export default {
       bayar: "",
       kembalian: 0,
       invalid: false,
+      cek_kode: [],
+      isEditted: false,
     };
   },
   components: { Card, Table },
@@ -219,7 +231,9 @@ export default {
         this.barang.harga !== null &&
         this.barang.jumlah_beli !== undefined;
 
-      if (condition) {
+      console.log(this.barang.kode_barang);
+
+      if (condition && !this.cek_kode.includes(this.barang.kode_barang)) {
         const item = {
           kode_barang: this.barang.kode_barang,
           nama: this.barang.nama,
@@ -230,9 +244,42 @@ export default {
         };
 
         this.cart.push(item);
+        this.cek_kode.push(item.kode_barang);
         this.search = "";
         this.barang = "";
         this.totalHarga();
+      } else if (condition && this.cek_kode.includes(this.barang.kode_barang)) {
+        // console.log("true");
+        this.cart.forEach((item, index) => {
+          // console.log("loop" + index);
+          if (item.kode_barang === this.barang.kode_barang) {
+            if (this.isEditted === true) {
+              item.jumlah_beli = this.barang.jumlah_beli;
+              this.isEditted = false;
+            } else {
+              item.jumlah_beli += this.barang.jumlah_beli;
+            }
+            item.subTotal = item.jumlah_beli * this.barang.harga;
+            index + 1;
+          } else if (item.kode_barang !== this.barang.kode_barang) {
+            this.cart.forEach((item, index) => {
+              if (item.kode_barang === this.barang.kode_barang) {
+                if (this.isEditted === true) {
+                  item.jumlah_beli = this.barang.jumlah_beli;
+                  this.isEditted = false;
+                } else {
+                  item.jumlah_beli += this.barang.jumlah_beli;
+                }
+                item.subTotal = item.jumlah_beli * this.barang.harga;
+                index + 1;
+              }
+            });
+          }
+          console.log("finish");
+          this.search = "";
+          this.barang = "";
+          this.totalHarga();
+        });
       } else {
         Swal.fire({
           title: "Error!",
@@ -255,10 +302,28 @@ export default {
     },
     resetCart() {
       this.cart = [];
+      this.cek_kode = [];
       this.total = 0;
+    },
+    editItem(i) {
+      this.isEditted = true;
+
+      this.cart.filter((item, index) => {
+        if (index === i) {
+          this.search = item.kode_barang;
+          this.barang = {
+            kode_barang: item.kode_barang,
+            nama: item.nama,
+            stok: item.stok,
+            harga: item.harga,
+            jumlah_beli: item.jumlah_beli,
+          };
+        }
+      });
     },
     deleteItem(i) {
       this.cart = this.cart.filter((item, index) => index !== i);
+      this.cek_kode = this.cek_kode.filter((item, index) => index !== i);
       this.totalHarga();
     },
     setKembalian() {
