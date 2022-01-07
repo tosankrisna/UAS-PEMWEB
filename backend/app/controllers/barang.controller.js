@@ -1,4 +1,4 @@
-const { barangs } = require("../models");
+const { barangs, Sequelize } = require("../models");
 const db = require("../models");
 const Barang = db.barangs;
 const Op = db.Sequelize.Op;
@@ -124,3 +124,12 @@ exports.delete = (req, res) => {
       });
     });
 };
+
+// exports.updateStok = (kode, jumlah) => {
+//   Barang.update(
+//     {
+//       stok: Sequelize.literal(stok - jumlah),
+//     },
+//     { where: { kode_barang: kode } }
+//   );
+// };

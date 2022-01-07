@@ -21,9 +21,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 db.sequelize.sync();
 
 /* Dev Mode */
-// db.sequelize.sync({ force: 1 }).then(() => {
+// db.sequelize
+//   .sync({ force: 1 })
+//   .then(() => {
 //     console.log("Drop and re-sync db.");
-// });
+//   })
+//   .catch((error) => console.log(error));
 
 // simple route
 app.get("/", (req, res) => {

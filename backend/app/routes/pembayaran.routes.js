@@ -10,7 +10,7 @@ module.exports = (app) => {
   router.get("/", pembayarans.findAll);
 
   // add barang to pembayaran
-  router.post("/add/:id_pembayaran/:id_barang", pembayarans.addBarang);
+  router.post("/addpembayaran", pembayarans.addBarang);
 
   // Retrieve a single Tutorial with id
   router.get("/:id_pembayaran", pembayarans.findOne);

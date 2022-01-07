@@ -81,8 +81,9 @@ exports.findOne = (req, res) => {
 };
 
 exports.addBarang = (req, res) => {
-  const id_pembayaran = req.params.id_pembayaran;
-  const id_barang = req.params.id_barang;
+  const id_pembayaran = req.body.id_pembayaran;
+  const id_barang = req.body.id_barang;
+  const jumlah_pembelian = req.body.jumlah_pembelian;
 
   return Pembayaran.findByPk(id_pembayaran)
     .then((pembayaran) => {
@@ -101,7 +102,10 @@ exports.addBarang = (req, res) => {
           return;
         }
 
-        pembayaran.addBarang(barang);
+        pembayaran.addBarang(barang, {
+          through: { jumlah_pembelian: jumlah_pembelian },
+        });
+        // Barang.updateStok(barang.)
         res.status(200).send({
           status: `added Barang id=${barang.id} to Pembayaran id=${pembayaran.id}`,
         });
