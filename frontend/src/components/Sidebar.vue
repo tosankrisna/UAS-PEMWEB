@@ -19,13 +19,13 @@
     <hr class="sidebar-divider" />
 
     <div class="sidebar-heading text-white">Menu</div>
-    <li class="nav-item" v-if="level === 'kasir'">
+    <li class="nav-item" v-if="level === 'admin'">
       <router-link class="nav-link" :to="{ name: 'Kasir' }">
         <i class="fas fa-user fa-cog text-white"></i>
         <span class="ml-md-3 text-white">Kasir</span>
       </router-link>
     </li>
-    <li class="nav-item" v-if="level === 'kasir'">
+    <li class="nav-item" v-if="level === 'admin'">
       <router-link class="nav-link" :to="{ name: 'Barang' }">
         <i class="fas fa-shopping-bag fa-cog text-white"></i>
         <span class="ml-md-3 text-white">Barang</span>
