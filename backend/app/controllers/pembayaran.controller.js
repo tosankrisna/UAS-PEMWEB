@@ -1,7 +1,8 @@
-const { pembayarans } = require("../models");
+const { pembayarans, sequelize } = require("../models");
 const db = require("../models");
 const Pembayaran = db.pembayarans;
 const Barang = db.barangs;
+const barangController = require("./barang.controller");
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Pembayaran
@@ -58,19 +59,11 @@ exports.findAll = (req, res) => {
 
 // Find a single Pembayaran with an id
 exports.findOne = (req, res) => {
-  const id = req.params.id_pembayaran;
+  const kode_pembayaran = req.params.kode_pembayaran;
 
-  return Pembayaran.findByPk(id, {
-    include: [
-      {
-        model: Barang,
-        as: "barangs",
-        attributes: ["id", "kode_barang", "nama", "harga", "stok"],
-        through: {
-          attributes: [],
-        },
-      },
-    ],
+  return Pembayaran.findOne({
+    where: { kode_pembayaran: kode_pembayaran },
+    include: [{ model: Barang, as: "barangs" }],
   })
     .then((pembayaran) => {
       res.send(pembayaran);
@@ -105,7 +98,9 @@ exports.addBarang = (req, res) => {
         pembayaran.addBarang(barang, {
           through: { jumlah_pembelian: jumlah_pembelian },
         });
-        // Barang.updateStok(barang.)
+
+        barangController.updateStok(id_barang, jumlah_pembelian);
+
         res.status(200).send({
           status: `added Barang id=${barang.id} to Pembayaran id=${pembayaran.id}`,
         });

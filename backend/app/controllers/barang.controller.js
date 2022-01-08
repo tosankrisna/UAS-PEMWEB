@@ -125,11 +125,12 @@ exports.delete = (req, res) => {
     });
 };
 
-// exports.updateStok = (kode, jumlah) => {
-//   Barang.update(
-//     {
-//       stok: Sequelize.literal(stok - jumlah),
-//     },
-//     { where: { kode_barang: kode } }
-//   );
-// };
+exports.updateStok = (id_barang, jumlah_pembelian) => {
+  Barang.findOne({ where: { id: id_barang } })
+    .then((item) => {
+      return item.update({ stok: item.stok - jumlah_pembelian });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
