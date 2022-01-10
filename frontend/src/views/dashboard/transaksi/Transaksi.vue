@@ -24,18 +24,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>8101929101</td>
-            <td>24-12-2021</td>
-            <td>Rp. 100.000</td>
+          <tr
+            v-for="(transaction, index) in transactions"
+            :key="transaction.id"
+          >
+            <td>{{ index + 1 }}</td>
+            <td class="text-uppercase">{{ transaction.kode_pembayaran }}</td>
+            <td>{{ setTime(transaction.tgl_pembayaran) }}</td>
+            <td>Rp. {{ transaction.total_harga }}</td>
             <td>
               <router-link
-                :to="{ name: 'DetailTransaksi' }"
+                :to="{
+                  name: 'DetailTransaksi',
+                  params: { kode_transaksi: transaction.kode_pembayaran },
+                }"
                 class="btn btn-sm btn-warning mr-2"
                 >Detail</router-link
               >
-              <button @click="goToPrint" class="btn btn-sm btn-primary mr-2">
+              <button
+                @click="goToPrint(transaction.kode_pembayaran)"
+                class="btn btn-sm btn-primary mr-2"
+              >
                 Cetak Struk
               </button>
             </td>
@@ -48,17 +57,50 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 import Table from "@/components/Table.vue";
 import Search from "@/components/Search.vue";
 
 export default {
   components: { Table, Search },
+  data() {
+    return {
+      transactions: null,
+    };
+  },
   methods: {
-    goToPrint() {
-      let route = this.$router.resolve({ name: "StrukTransaksi" });
+    goToPrint(kode) {
+      let route = this.$router.resolve({
+        name: "StrukTransaksi",
+        params: { kode_transaksi: kode },
+      });
       const struk = window.open(route.href, "", "status=0");
       struk.print();
     },
+    async getAllTransactions() {
+      const res = await axios.get("http://localhost:8080/api/pembayaran/");
+      this.transactions = res.data;
+    },
+    setTime(time) {
+      return (
+        moment(time).locale("id").format("L") +
+        " " +
+        moment(time).locale("id").format("LT")
+      );
+    },
+    async searchBarang(search) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/api/pembayaran?search=${search}`
+        );
+        this.transactions = res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  mounted() {
+    this.getAllTransactions();
   },
 };
 </script>

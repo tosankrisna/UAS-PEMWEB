@@ -36,10 +36,10 @@
         <tbody>
           <tr v-for="barang in transaction.barang" :key="barang.id">
             <td class="text-capitalize">{{ barang.nama }}</td>
-            <td>{{ barang.harga }}</td>
+            <td>Rp. {{ barang.harga }}</td>
             <td>x{{ barang.pembayaran_barang.jumlah_pembelian }}</td>
             <td>
-              {{ barang.pembayaran_barang.jumlah_pembelian * barang.harga }}
+              Rp. {{ barang.pembayaran_barang.jumlah_pembelian * barang.harga }}
             </td>
           </tr>
         </tbody>
