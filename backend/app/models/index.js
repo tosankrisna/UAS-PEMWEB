@@ -46,4 +46,7 @@ db.pembayarans.belongsToMany(db.barangs, {
   foreignKey: "pembayaran_id",
 });
 
+db.admins.hasMany(db.pembayarans, { as: "pembayarans" });
+db.pembayarans.belongsTo(db.admins, { as: "admin" });
+
 module.exports = db;

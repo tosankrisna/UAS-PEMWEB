@@ -2,6 +2,7 @@ const { pembayarans, sequelize } = require("../models");
 const db = require("../models");
 const Pembayaran = db.pembayarans;
 const Barang = db.barangs;
+const Admin = db.admins;
 const barangController = require("./barang.controller");
 const Op = db.Sequelize.Op;
 
@@ -9,10 +10,10 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   if (
     !req.body.kode_pembayaran ||
-    !req.body.tgl_pembayaran ||
     !req.body.bayar ||
     !req.body.kembalian ||
-    !req.body.total_harga
+    !req.body.total_harga ||
+    !req.body.adminId
   ) {
     res.status(500).send({
       message: "Please fill all forms",
@@ -22,10 +23,11 @@ exports.create = (req, res) => {
 
   const pembayarans = {
     kode_pembayaran: req.body.kode_pembayaran,
-    tgl_pembayaran: req.body.tgl_pembayaran,
+    tgl_pembayaran: new Date(),
     bayar: req.body.bayar,
-    kembalian: req.body.kembalian,
+    kembalian: parseInt(req.body.kembalian),
     total_harga: req.body.total_harga,
+    adminId: req.body.adminId,
   };
 
   Pembayaran.create(pembayarans)
@@ -63,7 +65,10 @@ exports.findOne = (req, res) => {
 
   return Pembayaran.findOne({
     where: { kode_pembayaran: kode_pembayaran },
-    include: [{ model: Barang, as: "barangs" }],
+    include: [
+      { model: Admin, as: "admin" },
+      { model: Barang, as: "barangs" },
+    ],
   })
     .then((pembayaran) => {
       res.send(pembayaran);
