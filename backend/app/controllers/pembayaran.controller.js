@@ -41,16 +41,16 @@ exports.create = (req, res) => {
 
 // Retrieve all barang from the database.
 exports.findAll = (req, res) => {
-  const kode_pembayaran = req.query.kode_pembayaran;
-  const condition = kode_pembayaran
+  const search = req.query.search;
+  const condition = search
     ? {
         kode_pembayaran: {
-          [Op.like]: `%${kode_pembayaran}%`,
+          [Op.like]: `%${search}%`,
         },
       }
     : null;
 
-  Pembayaran.findAll({ where: condition })
+  Pembayaran.findAll({ order: [["id", "DESC"]], where: condition })
     .then((data) => {
       res.send(data);
     })
