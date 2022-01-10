@@ -122,7 +122,7 @@
   <Table class="mt-1">
     <template v-slot:header>Keranjang Belanja</template>
     <template v-slot:addButton>
-      <button class="btn btn-primary btn-md mb-3 mr-2" @click="goToPrint">
+      <button class="btn btn-primary btn-md mb-3 mr-2" @click="prosesTransaksi">
         Proses & Cetak Struk
       </button>
       <button class="btn btn-danger btn-md mb-3" @click="resetCart">
@@ -184,6 +184,7 @@ export default {
     return {
       search: "",
       barang: {
+        id: null,
         kode_barang: null,
         nama: null,
         stok: null,
@@ -197,6 +198,7 @@ export default {
       invalid: false,
       cek_kode: [],
       isEditted: false,
+      isError: false,
     };
   },
   components: { Card, Table },
@@ -208,6 +210,7 @@ export default {
         );
         if (res.data) {
           this.barang = {
+            id: res.data.id,
             kode_barang: res.data.kode_barang,
             nama: res.data.nama,
             stok: res.data.stok,
@@ -231,10 +234,13 @@ export default {
         this.barang.harga !== null &&
         this.barang.jumlah_beli !== undefined;
 
-      console.log(this.barang.kode_barang);
-
-      if (condition && !this.cek_kode.includes(this.barang.kode_barang)) {
+      if (
+        condition &&
+        !this.cek_kode.includes(this.barang.kode_barang) &&
+        this.barang.jumlah_beli <= this.barang.stok
+      ) {
         const item = {
+          id: this.barang.id,
           kode_barang: this.barang.kode_barang,
           nama: this.barang.nama,
           stok: this.barang.stok,
@@ -248,10 +254,12 @@ export default {
         this.search = "";
         this.barang = "";
         this.totalHarga();
-      } else if (condition && this.cek_kode.includes(this.barang.kode_barang)) {
-        // console.log("true");
+      } else if (
+        condition &&
+        this.cek_kode.includes(this.barang.kode_barang) &&
+        this.barang.jumlah_beli <= this.barang.stok
+      ) {
         this.cart.forEach((item, index) => {
-          // console.log("loop" + index);
           if (item.kode_barang === this.barang.kode_barang) {
             if (this.isEditted === true) {
               item.jumlah_beli = this.barang.jumlah_beli;
@@ -275,10 +283,23 @@ export default {
               }
             });
           }
-          console.log("finish");
           this.search = "";
           this.barang = "";
           this.totalHarga();
+        });
+      } else if (this.barang.jumlah_beli > this.barang.stok) {
+        Swal.fire({
+          title: "Error!",
+          text: "Jumlah pembelian melebihi stok",
+          icon: "error",
+          confirmButtonText: "Confirm",
+        });
+      } else if (parseInt(this.kembalian) < 0) {
+        Swal.fire({
+          title: "Error!",
+          text: "Jumlah pembayaran kurang!",
+          icon: "error",
+          confirmButtonText: "Confirm",
         });
       } else {
         Swal.fire({
@@ -295,8 +316,11 @@ export default {
         this.total += item.subTotal;
       });
     },
-    goToPrint() {
-      let route = this.$router.resolve({ name: "StrukTransaksi" });
+    goToPrint(kode) {
+      let route = this.$router.resolve({
+        name: "StrukTransaksi",
+        params: { kode_transaksi: kode },
+      });
       const struk = window.open(route.href, "", "status=0");
       struk.print();
     },
@@ -312,6 +336,7 @@ export default {
         if (index === i) {
           this.search = item.kode_barang;
           this.barang = {
+            id: item.id,
             kode_barang: item.kode_barang,
             nama: item.nama,
             stok: item.stok,
@@ -329,8 +354,97 @@ export default {
     setKembalian() {
       if (this.bayar !== "") {
         this.kembalian = this.bayar - this.total;
+        console.log(this.kembalian < 0);
       } else {
         this.kembalian = 0;
+      }
+    },
+    async prosesTransaksi() {
+      if (this.cart.length < 1) {
+        Swal.fire({
+          title: "Error!",
+          text: "Keranjang belanja tidak boleh kosong!",
+          icon: "error",
+          confirmButtonText: "Confirm",
+        });
+      } else if (this.bayar === "") {
+        Swal.fire({
+          title: "Error!",
+          text: "Pembayaran tidak boleh kosong!",
+          icon: "error",
+          confirmButtonText: "Confirm",
+        });
+      } else if (this.kembalian < 0) {
+        Swal.fire({
+          title: "Error!",
+          text: "Jumlah pembayaran kurang!",
+          icon: "error",
+          confirmButtonText: "Confirm",
+        });
+      } else {
+        const kode_pembayaran = Math.random().toString(36).substr(2, 12);
+        try {
+          const res = await axios.post(
+            "http://localhost:8080/api/pembayaran/add/",
+            {
+              kode_pembayaran: kode_pembayaran,
+              bayar: this.bayar,
+              kembalian: this.kembalian == 0 ? "0" : this.kembalian,
+              total_harga: this.total,
+              adminId: parseInt(localStorage.getItem("id")),
+            }
+          );
+
+          if (res.status == 200) {
+            this.cart.forEach((item) => {
+              let pembayaran_barang = {
+                id_pembayaran: res.data.data.id,
+                id_barang: item.id,
+                jumlah_pembelian: item.jumlah_beli,
+              };
+
+              axios
+                .post(
+                  "http://localhost:8080/api/pembayaran/addpembayaran",
+                  pembayaran_barang
+                )
+                .then((response) => {
+                  if (response.status == 200) {
+                    Swal.fire({
+                      icon: "success",
+                      title: "Pembayaran berhasil dilakukan",
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
+
+                    this.cart = [];
+                    this.cek_kode = [];
+                    this.total = 0;
+                    this.bayar = "";
+                    this.kembalian = 0;
+
+                    this.isError = false;
+                  }
+                })
+                .catch((error) => {
+                  Swal.fire({
+                    title: "Error!",
+                    text: "Terjadi kesalahan dalam transaksi!",
+                    icon: "error",
+                    confirmButtonText: "Confirm",
+                  });
+                  this.isError = true;
+                  console.log(error);
+                });
+            });
+
+            if (this.isError === false) {
+              this.goToPrint(res.data.data.kode_pembayaran);
+            }
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
       }
     },
   },
