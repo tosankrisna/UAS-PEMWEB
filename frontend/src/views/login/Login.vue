@@ -50,6 +50,7 @@ export default {
       if (res.data) {
         this.$router.push("/");
         localStorage.setItem("login", true);
+        localStorage.setItem("id", res.data.id);
         localStorage.setItem("nip", res.data.nip);
         localStorage.setItem("level", res.data.level);
       } else {
