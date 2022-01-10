@@ -69,7 +69,7 @@ const routes = [
     component: DetailTransaksi,
   },
   {
-    path: "/struk-transaksi",
+    path: "/struk-transaksi/:kode_transaksi",
     name: "StrukTransaksi",
     component: StrukTransaksi,
   },
