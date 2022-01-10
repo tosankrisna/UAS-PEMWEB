@@ -97,7 +97,7 @@ export default {
       this.name = res.data.nama;
     },
     logoutUser() {
-      const remove = ["login", "nip", "level"];
+      const remove = ["login", "nip", "level", "id"];
       remove.forEach((item) => localStorage.removeItem(item));
       this.$router.push("/login");
     },
