@@ -28,7 +28,9 @@ export default {
   computed: {
     isNotRoutes() {
       return (
-        this.$route.name !== "Login" && this.$route.name !== "StrukTransaksi"
+        this.$route.name !== "Login" &&
+        this.$route.name !== "StrukTransaksi" &&
+        this.$route.name !== "CetakReport"
       );
     },
   },

@@ -57,7 +57,7 @@
       </div>
     </li>
     <li class="nav-item">
-      <router-link class="nav-link" to="#">
+      <router-link class="nav-link" :to="{ name: 'Report' }">
         <i class="fas fa-file-alt fa-cog text-white"></i>
         <span class="ml-md-3 text-white">Report</span>
       </router-link>
