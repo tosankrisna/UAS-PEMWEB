@@ -44,6 +44,7 @@
       >
         <div class="bg-white collapse-inner rounded">
           <router-link
+            v-if="level === 'kasir'"
             :to="{ name: 'AddTransaksi' }"
             class="collapse-item text-black"
             >Tambah Transaksi</router-link
@@ -56,7 +57,7 @@
         </div>
       </div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" v-if="level === 'admin'">
       <router-link class="nav-link" :to="{ name: 'Report' }">
         <i class="fas fa-file-alt fa-cog text-white"></i>
         <span class="ml-md-3 text-white">Report</span>
