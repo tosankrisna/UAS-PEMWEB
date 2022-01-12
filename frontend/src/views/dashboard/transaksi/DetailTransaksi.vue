@@ -33,6 +33,10 @@
             <td>Rp. {{ transaction.kembalian }}</td>
           </tr>
           <tr>
+            <td class="font-weight-bold">Kasir</td>
+            <td class="text-capitalize">{{ transaction.nama_kasir }}</td>
+          </tr>
+          <tr>
             <td class="font-weight-bold">Daftar Belanja</td>
             <td>
               <table class="table table-bordered border-black">
