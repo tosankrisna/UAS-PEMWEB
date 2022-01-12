@@ -9,6 +9,9 @@ module.exports = (app) => {
   // Retrieve all pembayarans
   router.get("/", pembayarans.findAll);
 
+  // generate report
+  router.get("/report", pembayarans.generateReport);
+
   // add barang to pembayaran
   router.post("/addpembayaran", pembayarans.addBarang);
 

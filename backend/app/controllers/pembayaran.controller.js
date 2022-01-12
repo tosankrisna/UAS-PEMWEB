@@ -115,3 +115,19 @@ exports.addBarang = (req, res) => {
       res.status(500).send({ status: error.message });
     });
 };
+
+exports.generateReport = (req, res) => {
+  const startDate = new Date(req.query.startDate);
+  const endDate = new Date(req.query.endDate);
+
+  Pembayaran.findAll({
+    where: { tgl_pembayaran: { [Op.between]: [startDate, endDate] } },
+    include: [{ model: Barang, as: "barangs" }],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      res.status(500).send({ status: error.message });
+    });
+};
