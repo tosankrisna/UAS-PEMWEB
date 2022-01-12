@@ -48,11 +48,16 @@ export default {
         `http://localhost:8080/api/admin/login?nip=${this.nip}&password=${this.password}`
       );
       if (res.data) {
-        this.$router.push("/");
         localStorage.setItem("login", true);
         localStorage.setItem("id", res.data.id);
         localStorage.setItem("nip", res.data.nip);
         localStorage.setItem("level", res.data.level);
+
+        if (res.data.level === "admin") {
+          this.$router.push("/kasir");
+        } else {
+          this.$router.push("/add-transaksi");
+        }
       } else {
         Swal.fire({
           title: "Error!",

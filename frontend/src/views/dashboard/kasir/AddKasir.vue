@@ -49,7 +49,9 @@
         </div>
         <div class="mb-3">
           <button type="submit" class="btn btn-primary mr-3">Submit</button>
-          <router-link to="/" class="btn btn-danger">Batal</router-link>
+          <router-link :to="{ name: 'Kasir' }" class="btn btn-danger"
+            >Batal</router-link
+          >
         </div>
       </form>
     </template>
@@ -81,7 +83,7 @@ export default {
           "http://localhost:8080/api/admin/add",
           this.kasir
         );
-        this.$router.push("/");
+        this.$router.push("/kasir");
       } catch (error) {
         console.log(error);
       }

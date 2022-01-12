@@ -109,7 +109,7 @@ export default {
           `http://localhost:8080/api/admin/update/${this.$route.params.nip}`,
           this.profile
         );
-        this.$router.push("/");
+        this.$router.go(-1);
       } catch (error) {
         console.log(error);
       }

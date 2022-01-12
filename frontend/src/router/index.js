@@ -26,7 +26,7 @@ const routes = [
     component: Profil,
   },
   {
-    path: "/",
+    path: "/kasir",
     name: "Kasir",
     component: Kasir,
   },
