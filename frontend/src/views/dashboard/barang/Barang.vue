@@ -134,7 +134,7 @@ export default {
     },
     async searchBarang(search) {
       try {
-        await axios.get(`http://localhost:8080/api/barang?search=${search}`);
+        const res = await axios.get(`http://localhost:8080/api/barang?search=${search}`);
         this.barang = res.data;
       } catch (error) {
         console.log(error);
